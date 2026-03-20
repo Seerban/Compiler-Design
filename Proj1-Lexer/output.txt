@@ -1,0 +1,68 @@
+"int", linia 0, Token.KEYWORD, 3
+"main", linia 0, Token.KEYWORD, 4
+"(", linia 0, Token.SEPARATOR, 1
+")", linia 0, Token.SEPARATOR, 1
+"{", linia 0, Token.SEPARATOR, 1
+"int", linia 1, Token.KEYWORD, 3
+"num", linia 1, Token.IDENTIFIER, 3
+",", linia 1, Token.SEPARATOR, 1
+"a12b_34", linia 1, Token.IDENTIFIER, 7
+",", linia 1, Token.SEPARATOR, 1
+"--", linia 1, Token.OPERATOR, 2
+"-", linia 1, Token.OPERATOR, 1
+#### error numar invalid ####
+"13aaa;", linia 1, Token.ERROR, 6
+#### ERROR: INVALID TOKEN ####
+eroare desc
+"string", linia 2, Token.KEYWORD, 6
+"x", linia 2, Token.IDENTIFIER, 1
+"=", linia 2, Token.OPERATOR, 1
+""un string \
+    pe mai \" multe linii "", linia 2, Token.LITERAL, 40
+"printf", linia 3, Token.IDENTIFIER, 6
+"(", linia 3, Token.SEPARATOR, 1
+""Enter an integer: "", linia 3, Token.LITERAL, 20
+")", linia 3, Token.SEPARATOR, 1
+";", linia 3, Token.SEPARATOR, 1
+"scanf", linia 4, Token.IDENTIFIER, 5
+"(", linia 4, Token.SEPARATOR, 1
+""%d"", linia 4, Token.LITERAL, 4
+",", linia 4, Token.SEPARATOR, 1
+"&", linia 4, Token.OPERATOR, 1
+"num", linia 4, Token.IDENTIFIER, 3
+")", linia 4, Token.SEPARATOR, 1
+";", linia 4, Token.SEPARATOR, 1
+"// true if num is perfectly divisible by 2", linia 5, Token.COMMENT, 42
+"if", linia 6, Token.KEYWORD, 2
+"(", linia 6, Token.SEPARATOR, 1
+"num", linia 6, Token.IDENTIFIER, 3
+"%", linia 6, Token.OPERATOR, 1
+"2", linia 6, Token.LITERAL, 1
+"==", linia 6, Token.OPERATOR, 2
+"0", linia 6, Token.LITERAL, 1
+")", linia 6, Token.SEPARATOR, 1
+"printf", linia 7, Token.IDENTIFIER, 6
+"(", linia 7, Token.SEPARATOR, 1
+""%d is even."", linia 7, Token.LITERAL, 13
+",", linia 7, Token.SEPARATOR, 1
+"num", linia 7, Token.IDENTIFIER, 3
+")", linia 7, Token.SEPARATOR, 1
+";", linia 7, Token.SEPARATOR, 1
+"else", linia 8, Token.KEYWORD, 4
+"printf", linia 9, Token.IDENTIFIER, 6
+"(", linia 9, Token.SEPARATOR, 1
+""%d is odd."", linia 9, Token.LITERAL, 12
+",", linia 9, Token.SEPARATOR, 1
+"num", linia 9, Token.IDENTIFIER, 3
+")", linia 9, Token.SEPARATOR, 1
+";", linia 9, Token.SEPARATOR, 1
+"return", linia 11, Token.KEYWORD, 6
+"0", linia 11, Token.LITERAL, 1
+";", linia 11, Token.SEPARATOR, 1
+#### ERROR comment multi-line nefinalizat ####
+"/* comentariu *** pe /mai
+    multe linii ** num++;
+}
+", linia 11, Token.ERROR, 54
+#### ERROR: INVALID TOKEN ####
+eroare desc
