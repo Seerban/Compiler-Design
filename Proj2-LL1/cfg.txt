@@ -1,4 +1,3 @@
 S
-S->aA
-A->bB
-B->c
+S->aA|b
+A->cS|d

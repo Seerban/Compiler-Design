@@ -1,0 +1,11 @@
+S
+S->AB|bX|dX
+X->dX|ε
+A->aY|v
+Y->a|ε
+B->CD
+C->cZ|ε
+Z->gZ|ε
+D->d|fE
+E->eF|ε
+F->h|ε

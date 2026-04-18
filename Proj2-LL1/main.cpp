@@ -6,7 +6,7 @@ std::string output = "";
 char next = input[0];
 int idx = 0;
 
-bool S(); bool A(); bool B(); 
+bool S(); bool A(); 
 
 bool read(char c) {
    if( c == next ) {
@@ -26,23 +26,21 @@ bool S() {
       if( !A() ) return false;
       return true;
    }
+   else if( next == 'b' ) {
+      if( !read('b') ) return false;
+      return true;
+   }
    return false; // ERROR
 }
 
 bool A() {
    output += "A";
    std::cout<<"A"<<"-"<<"char:"<<next<<"-"<<"idx:"<<idx<<"\n";
-   if( next == 'b' ) {
-      if( !read('b') ) return false;
-      if( !B() ) return false;
+   if( next == 'c' ) {
+      if( !read('c') ) return false;
+      if( !S() ) return false;
       return true;
    }
-   return false; // ERROR
-}
-
-bool B() {
-   output += "B";
-   std::cout<<"B"<<"-"<<"char:"<<next<<"-"<<"idx:"<<idx<<"\n";
    return false; // ERROR
 }
 

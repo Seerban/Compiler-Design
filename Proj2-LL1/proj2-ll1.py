@@ -21,7 +21,8 @@ with open("cfg.txt") as f:
 #### Logica pentru first si follow:
 # https://www.geeksforgeeks.org/compiler-design/why-first-and-follow-in-compiler-design/
 
-def first(c : str) -> list[str]:
+def first(c : str, visited : set = set()) -> list[str]:
+    if c in visited: return []
     if c.islower(): return c # daca este terminal il returnam direct
 
     res = []
@@ -35,7 +36,8 @@ def first(c : str) -> list[str]:
                 res.append( i )
 
             if i.isupper():
-                res.extend( first(i) )
+                visited.add(c)
+                res.extend( first(i, visited) )
     
     return list(set(res))
 
