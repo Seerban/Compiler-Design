@@ -1,7 +1,10 @@
 rules: dict[str, list[str]] = dict()
+first_dict: dict[str, list[str]] = dict()
 follow_dict: dict[str, list[str]] = dict()
+parse_rules_dict: dict[str, list[str]] = dict()
 start: str = ""
-epsilon: str = "ε"
+
+EPSILON: str = "ε"
 
 # vom folosi neterminal = uppercase, terminal = lowercase
 
@@ -41,12 +44,13 @@ def get_first_dict():
 
 # folosit in follow, daca simbolul exista deja atunci nu il adaugam
 def add_unique_to_dict(d : dict[str, list[str]], key : str, char : str) -> bool:
-    if char == epsilon: return False
+    if char == EPSILON: return False
     if char in d[key]: return False
     else:
         d[key].append(char)
         return True
 
+# necesita first_dict sa fie generat
 def get_follow_dict():
     # initializam dictionar gol cu fiecare simbol neterminal
     follow_dict = {key : [] for key in rules}
@@ -93,6 +97,47 @@ def get_follow_dict():
     
     return follow_dict
 
+def get_parsing_follow_rules_dict():
+    return {key : get_parsing_follow_rules(key) for key in rules}
+
+# necesita follow_dict sa fie generate
+# dictionar [neterminal][expresie] = first(expresie * follow(neterminal))
+def get_parsing_follow_rules(C : str):
+    parse_rules = {exp: [] for exp in rules[C]}
+
+    # daca am scapat atunci nu adaugam follow() la expresie
+    for exp in rules[C]:
+        escaped = False
+
+        for char in exp:
+            # adaugam first() de la (ne)terminalul actual
+            for first_char in first(char):
+                    if first_char not in parse_rules[exp]:
+                        parse_rules[exp].append(first_char)
+            
+            # daca elementul actual nu poate fi epsilon atunci ne oprim aici
+            if EPSILON not in first(char):
+                escaped = True
+                break
+        
+        if not escaped:
+            parse_rules[exp].extend( follow_dict[C] )
+    
+    return parse_rules
+
+# necesita parse_rules_dict sa fie calculat
+def isLL1():
+    for C in parse_rules_dict:
+        chars = []
+        for exp in parse_rules_dict[C]:
+            print(exp)
+            for char in exp:
+                if char in chars: return False
+                chars.append(char)
+            print(exp, chars)
+    
+    return True
+
 
 def generate_recursive_descent_parser(input : str):
 
@@ -134,9 +179,9 @@ def generate_recursive_descent_parser(input : str):
         # trece prin fiecare regula a neterminalului
         for prop_idx, prop in enumerate(rules[name]):
             # pentru fiecare element al expresiei se genereaza un if
-            # daca poate fi epsilon, inlocuim return false cu return true la sfarsit
+            # daca poate fi EPSILON, inlocuim return false cu return true la sfarsit
             for i in range( len(prop) ):
-                if prop == epsilon:
+                if prop == EPSILON:
                     nullable = True
                     continue
 
@@ -150,7 +195,7 @@ def generate_recursive_descent_parser(input : str):
                     
                     # daca este neterminal verificam daca caracterul de citit se afla in first()
                     if prop[i].isupper():
-                        first_set = [x for x in first(prop[i]) if x != epsilon]
+                        first_set = [x for x in first(prop[i]) if x != EPSILON]
                         if prop_idx == 0:
                             f.write(f"   if( std::string(\"{''.join(first_set)}\").find(next) != std::string::npos ) {{\n")
                         else:
@@ -165,7 +210,7 @@ def generate_recursive_descent_parser(input : str):
                     f.write("      return true;\n")
                     f.write("   }\n")
 
-        # daca neterminalul poate fii epsilon atunci este mereu adevarat
+        # daca neterminalul poate fii EPSILON atunci este mereu adevarat
         if nullable:
             f.write("   return true; // NULLABLE\n")
         else:
@@ -176,7 +221,7 @@ def generate_recursive_descent_parser(input : str):
         f.write("int main() {\n")
         f.write(f"   bool fin = {starter}();\n")
         f.write("   std::cout<<output;\n")
-        f.write("   std::cout<<\"\\n\"<<\"finalizat = \"<<fin<<\"\\n\";")
+        f.write("   std::cout<<\"\\n\"<<\"finalizat = \"<<fin<<\" pentru inputul \"<<input<<\"\\n\";")
         #f.write("   std::cout<<next=='$'?\"inputul a fost interpretat\" : \"inputul nu poate fi interpretat\";\n")
         f.write("}")
     
@@ -192,14 +237,21 @@ def generate_recursive_descent_parser(input : str):
 
 #for i in rules: print(f"{i}: {rules[i]}")
 
-print("#### FIRST(x) ####")
+print("\n#### FIRST(x) ####")
 first_dict = get_first_dict()
 for key in first_dict:
     print(f"{key} - {first_dict[key]}")
 
-print("#### FOLLOW(x) ####")
+print("\n#### FOLLOW(x) ####")
 follow_dict = get_follow_dict()
 for key in first_dict:
     print(f"{key} - {follow_dict[key]}")
+
+print("\n#### FIRST(x * FOLLOW(X)) ####")
+parse_rules_dict = get_parsing_follow_rules_dict()
+for key in parse_rules_dict:
+    print(f"{key} - {parse_rules_dict[key]}")
+
+print("\nis LL1: ", isLL1())
 
 generate_recursive_descent_parser("aavccdd$")

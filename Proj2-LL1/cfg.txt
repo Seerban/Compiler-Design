@@ -1,7 +1,4 @@
 S
-S->AB|CD|b
-A->aA|ε|v
-B->CB|d
-C->c|ε
-D->EA|a
-E->fE|g|ε
+S->aA
+A->bB
+B->c
