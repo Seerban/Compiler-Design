@@ -1,7 +1,7 @@
 S
-S->AB|b
-A->aA|ε
+S->AB|CD|b
+A->aA|ε|v
 B->CB|d
 C->c|ε
-D->DA|A
-E->f
+D->EA|a
+E->fE|g|ε
